@@ -81,3 +81,4 @@ Cordova/plugins
 Cordova/config.xml
 signing
 apikeys.js
+frontend/firebase/public

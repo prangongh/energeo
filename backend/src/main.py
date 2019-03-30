@@ -2,7 +2,7 @@ import json
 import random
 import requests
 
-weather_api_token = '35ff60e414294feeb1d225230192903'
+weather_api_token = '2d0722cbd8b84d2292c12339193003'
 weather_api_url_base = 'http://api.worldweatheronline.com/premium/v1/past-weather.ashx?'
 
 utility_api_token = 'lwTb05nKKAiDYqSPLlbu4ECvDPSzf25a95Mlkdhk'
