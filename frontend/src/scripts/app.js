@@ -64,7 +64,7 @@ function checkLocation() {
             });
             return;
         }
-    }, 5000);
+    }, 1000);
 }
 
 function backendRequest(zip, zpreloader) {
@@ -72,16 +72,45 @@ function backendRequest(zip, zpreloader) {
     //app.sheet.open('.location-sheet');
     app.request.get('http://127.0.0.1:5000/query?location=' + zip, function (data) {
         let results = JSON.parse(data);
-        console.log(results.wind.score);
+        let windbetter = false;
+        
+        if (results.wind.score > results.solar.score) {
+            windbetter = true;
+            $$('.results_wind_img').show();
+            $$('.results_solar_img').hide();
+            $$('.results_title').html('This area is best suited for wind power!');
+        } else {
+            $$('.results_wind_img').hide();
+            $$('.results_solar_img').show();
+            $$('.results_title').html('This area is best suited for solar power!');
+        }
         app.popup.open('.popup-results');
-        let scoregauge = app.gauge.create({
-            el: '.scoregauge',
+        //====sheet
+        let windgauge = app.gauge.create({
+            el: '.windgauge',
             type: 'semicircle',
             borderColor: '#4285f4',
             value: results.wind.score / 100,
-            valueText: Math.floor(results.wind.score) + '%'
+            valueText: Math.floor(results.wind.score) + '%',
+            labelText: "Wind Score"
         });
+        let solargauge = app.gauge.create({
+            el: '.solargauge',
+            type: 'semicircle',
+            borderColor: '#4285f4',
+            value: results.solar.score / 100,
+            valueText: Math.floor(results.solar.score) + '%',
+            labelText: "Solar Score"
+        });
+        $$('.location_best').html('This location is better suited for ' + (windbetter ? 'wind power.' : 'solar power.'));
+        //======
         runAnimation(true, false);
+        zpreloader.close();
+    }, function () {
+        console.log('request error');
+        app.toast.show({
+            text: 'There was an error making the request.'
+        });
         zpreloader.close();
     });
 }
