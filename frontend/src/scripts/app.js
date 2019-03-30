@@ -29,6 +29,7 @@ onPageInit('home', function () {
 
 function checkLocation() {
     runAnimation(true, true);
+    tpreloader = app.dialog.preloader('Evaluating location...');
     setTimeout(function () {
         let tzip = $$('input[name=zipcode]').val();
         if (validateZipCode(tzip)) {
@@ -57,12 +58,13 @@ function checkLocation() {
             });
         } else {
             runAnimation(true, false);
+            tpreloader.close();
             app.toast.show({
                 text: 'Please enter a valid zip code.'
             });
             return;
         }
-    }, 1000);
+    }, 5000);
 }
 
 function backendRequest(zip) {
@@ -78,5 +80,6 @@ function backendRequest(zip) {
             value: results.wind.score / 100,
             valueText: Math.floor(results.wind.score) + '%'
         });
+        tpreloader.close();
     });
 }
