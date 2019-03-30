@@ -50,8 +50,7 @@ function checkLocation() {
                             lng: latlng.lng()
                         });
                     }
-                    runAnimation(true, false);
-                    app.sheet.open('.location-sheet');
+                    backendRequest(tzip);
                 }
             });
         } else {
@@ -64,8 +63,11 @@ function checkLocation() {
     }, 1000);
 }
 
-function test() {
-    app.request.get('https://innovateit-19.appspot.com/', '11794', function (data) {
-        console.log(data);
+function backendRequest(zip) {
+    runAnimation(true, false);
+    app.sheet.open('.location-sheet');
+    app.request.get('http://127.0.0.1:5000/query?location=' + zip, function (data) {
+        let results = JSON.parse(data);
+        
     });
 }
