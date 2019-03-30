@@ -63,3 +63,9 @@ function checkLocation() {
         }
     }, 1000);
 }
+
+function test() {
+    app.request.get('blog-post.php', '11794', function (data) {
+        console.log(data);
+    });
+}
