@@ -22,12 +22,26 @@ function validateZipCode(zipcode) {
 }
 
 onPageInit('home', function () {
-   let tmap = new GMaps({
-        el: '#gmap',
+
+    let tmap = new GMaps({
+        el: '#umap',
         lat: '40.915616',
         lng: '-73.125152'
     });
     tmap.setCenter('40.915616', '-73.125152', function () {
         //map centered
     });
-});
+    runAnimation();
+}, false);
+
+function checkLocation() {
+    let tzip = $$('input[name=zipcode]').val();
+    if (validateZipCode(tzip)) {
+
+    } else {
+        app.toast.show({
+            text: 'Please enter a valid zip code.'
+        });
+        return;
+    }
+}
