@@ -1,0 +1,1 @@
+Using javascript, framework7 for frontend

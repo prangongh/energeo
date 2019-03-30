@@ -1,0 +1,29 @@
+{
+    "name": "drinkup",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "author": "Ryan O'Day",
+    "license": "ISC",
+    "devDependencies": {
+      "@types/es6-promise": "^3.3.0",
+      "babel-cli": "^6.26.0",
+      "babel-core": "^6.26.0",
+      "babel-preset-env": "^1.6.1",
+      "del": "^3.0.0",
+      "gulp": "^3.9.1",
+      "gulp-babel": "^7.0.1",
+      "gulp-clean-css": "^3.9.3",
+      "gulp-concat": "latest",
+      "gulp-concat-css": "^3.1.0",
+      "gulp-connect": "latest",
+      "gulp-htmlmin": "^4.0.0",
+      "gulp-nunjucks": "^3.0.0",
+      "gulp-typescript": "^5.0.0",
+      "gulp-uglify-es": "^1.0.4",
+      "gulp-util": "latest",
+      "run-sequence": "^2.2.1"
+    },
+    "private": true
+  }
+  

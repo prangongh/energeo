@@ -1,0 +1,1 @@
+Using typescript, framework7 for frontend

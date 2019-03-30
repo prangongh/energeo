@@ -80,4 +80,4 @@ Cordova/plugins
 .DS_Store
 Cordova/config.xml
 signing
-apikeys.ts
+apikeys.js
