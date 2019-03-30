@@ -4,3 +4,5 @@ var leftView;
 var mainView;
 
 var mainFirebase;
+
+var tmap;

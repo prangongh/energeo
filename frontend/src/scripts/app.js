@@ -22,8 +22,7 @@ function validateZipCode(zipcode) {
 }
 
 onPageInit('home', function () {
-
-    let tmap = new GMaps({
+    tmap = new GMaps({
         el: '#umap',
         lat: '40.915616',
         lng: '-73.125152'
@@ -37,7 +36,19 @@ onPageInit('home', function () {
 function checkLocation() {
     let tzip = $$('input[name=zipcode]').val();
     if (validateZipCode(tzip)) {
-
+        GMaps.geocode({
+            address: tzip,
+            callback: function(results, status) {
+              if (status == 'OK') {
+                var latlng = results[0].geometry.location;
+                tmap.setCenter(latlng.lat(), latlng.lng());
+                tmap.addMarker({
+                  lat: latlng.lat(),
+                  lng: latlng.lng()
+                });
+              }
+            }
+          });
     } else {
         app.toast.show({
             text: 'Please enter a valid zip code.'
