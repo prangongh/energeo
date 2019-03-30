@@ -42,10 +42,6 @@ function initializeFramework7() {
             name: 'menu_main',
             path: '/menu_main',
             url: 'menu/main.html'
-        }, {
-            name: 'menu_signin',
-            path: '/menu_signin',
-            url: 'menu/signin.html'
         }]
     });
 
