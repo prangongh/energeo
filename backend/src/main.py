@@ -17,21 +17,22 @@ num_of_data = 12
 
 # Comparison Data
 solar = {
-    'min_solar_hours': 4.0,
+    'min_solar_hours': 2.0,
     'uv_index': 6.0,
     'min_solar_energy' : 1000,
     'avg_cost': 0.10
 }
 
 wind = {
-    'min_wind_speed': 9.0,
+    'min_wind_speed': 6.0,
+    'min_air_pressure': 1012,
     'avg_cost': 0.06
 }
 
 # Functions
 def main(location):
     random_dates()
-    print(analyze_data(get_data(location)))
+    return analyze_data(get_data(location))
 
 def call_weather_api(location, date):
     url = weather_api_url_base + 'key=' + weather_api_token + '&q=' + location + '&date=' + date + '&tp=12' + '&format=json'
@@ -55,7 +56,6 @@ def get_data(location):
 
     json_data['utility'] = call_utility_api(location)
     
-    print(json_data)
     return json_data
 
 def analyze_data(json_data):
@@ -68,8 +68,15 @@ def analyze_data(json_data):
     sum_data = 0.0
     for i in range(0, num_of_data):
         sum_data += float(json_data['weather'][str(i)]['data']['weather'][0]['hourly'][0]['windspeedMiles'])
-        sum_data += float(json_data['weather'][str(i_]['data']['weather'][0]['hourly'][1]['windspeedMiles'])
+        sum_data += float(json_data['weather'][str(i)]['data']['weather'][0]['hourly'][1]['windspeedMiles'])
     avg_wind_speed = sum_data / (num_of_data * 2)
+
+    sum_data = 0.0
+    for i in range(0, num_of_data):
+        pressure = float(json_data['weather'][str(i)]['data']['weather'][0]['hourly'][1]['pressure'])
+        temperature = float(json_data['weather'][str(i)]['data']['weather'][0]['maxtempC']) + 273
+        sum_data +=  pressure / (287.05 * temperature)
+    avg_air_pressure = sum_data / num_of_data
 
     # Solar Data
     sum_data = 0.0
@@ -95,32 +102,46 @@ def analyze_data(json_data):
     wind_speed = (avg_wind_speed - wind['min_wind_speed']) / wind['min_wind_speed'] * 100
     if (wind_speed < 0):
         wind_speed = 0.0
-    wind_score = wind_speed
+    elif (wind_speed > 100):
+        wind_speed = 100.0
+    air_pressure = (avg_air_pressure - wind['min_air_pressure']) / wind['min_air_pressure'] * 1000
+    if (air_pressure < 0):
+        air_pressure = 0.0 
+    elif (air_pressure > 100):
+        air_pressure = 100.0
+    wind_score = wind_speed * 0.6 + air_pressure * 0.4
 
     # Scoring Solar
-    solar_energy = ((104 * avg_uv_index - 18.365) - solar['min_solar_energy']) / solar['min_solar_energy'] * 100
+    solar_energy = ((104 * avg_uv_index - 18.365) - solar['min_solar_energy']) / solar['min_solar_energy'] * 1000
     if (solar_energy < 0):
         solar_energy = 0.0
+    elif (solar_energy > 100):
+        solar_energy = 100.0
     sun_hours = (avg_sun_hours - solar['min_solar_hours']) / solar['min_solar_hours'] * 100
-    solar_score = sun_hours * 0.4 + solar_energy * 0.4 + avg_cloud_cover * 0.2
+    if (sun_hours < 0):
+        sun_hours = 0.0
+    elif (sun_hours > 100):
+        sun_hours = 100.0
+    solar_score = sun_hours * 0.4 + solar_energy * 0.4 - avg_cloud_cover * 0.1
 
-    result['wind'].append({
+    result['wind'] = {
         'score': wind_score,
-        'avg_wind_speed': avg_wind_speed
-    })
+        'avg_wind_speed': avg_wind_speed,
+        'avg_air_pressure': avg_air_pressure
+    }
         
-    result['solar'].append({
+    result['solar'] = {
         'score': solar_score,
         'avg_sun_hours': avg_sun_hours,
         'avg_uv_index': avg_uv_index,
         'avg_cloud_cover': avg_cloud_cover
-    })
+    }
 
-    result['other'].append({
+    result['other'] = {
         'current_elec_cost': current_elec_cost,
         'wind_energy_savings': wind_energy_savings,
         'solar_energy_savings': solar_energy_savings
-    })
+    }
 
     return result
            
@@ -157,7 +178,4 @@ def random_dates():
         else:
             date = str(rand_date)
         dates.append(year + '-' + month + '-' + date)
-    
 
-# Wind speeds: range of 89 MPH to 161 MPH; most common survival speed is 134 MPH
-main('11432')
