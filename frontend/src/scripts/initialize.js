@@ -7,6 +7,7 @@ function initializeApp() {
 
 function initializeFirebase() {
     //To be implemented
+    mainFirebase = firebase.initializeApp(mainFirebaseConfig);
 }
 
 function initializeFramework7() {
@@ -16,8 +17,8 @@ function initializeFramework7() {
     app = new Framework7({
         init: false,
         root: '#app', // App root element
-        id: 'com.ryanoday.drinkup', // App bundle ID
-        name: 'EngageWhiz', // App name
+        id: 'com.ryanoday.innovateit2019', // App bundle ID
+        name: 'InnovateIT2019', // App name
         theme: 'md', // Material Design Theme
         // App routes
         routes: _APPROUTES,
