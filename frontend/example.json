@@ -1,0 +1,18 @@
+{
+    "other": {
+        "current_elec_cost": 0.1903,
+        "solar_energy_savings": 0.09029999999999999,
+        "wind_energy_savings": 0.1303
+    },
+    "solar": {
+        "avg_cloud_cover": 59.666666666666664,
+        "avg_sun_hours": 7.8999999999999995,
+        "avg_uv_index": 2.8333333333333335,
+        "score": 34.03333333333333
+    },
+    "wind": {
+        "avg_air_pressure": 0.012574056761594477,
+        "avg_wind_speed": 8.791666666666666,
+        "score": 27.91666666666666
+    }
+}

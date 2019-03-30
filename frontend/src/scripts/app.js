@@ -23,6 +23,7 @@ function validateZipCode(zipcode) {
 
 onPageInit('home', function () {
     $$('#umap').hide();
+    $$('.viewinfobtn').hide();
     runAnimation();
 }, false);
 
@@ -33,6 +34,7 @@ function checkLocation() {
         if (validateZipCode(tzip)) {
             $$('#umap').show();
             $$('.mapbgimg').hide();
+            $$('.viewinfobtn').show();
             GMaps.geocode({
                 address: tzip,
                 callback: function (results, status) {
@@ -68,6 +70,13 @@ function backendRequest(zip) {
     app.sheet.open('.location-sheet');
     app.request.get('http://127.0.0.1:5000/query?location=' + zip, function (data) {
         let results = JSON.parse(data);
-        
+        console.log(results.wind.score);
+        let scoregauge = app.gauge.create({
+            el: '.scoregauge',
+            type: 'semicircle',
+            borderColor: '#4285f4',
+            value: results.wind.score / 100,
+            valueText: Math.floor(results.wind.score) + '%'
+        });
     });
 }
