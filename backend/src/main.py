@@ -146,7 +146,6 @@ def analyze_data(json_data):
     return result
            
 def random_dates():
-    dates.clear()
     year = '2018'
     for i in range(0, int(num_of_data * 0.6)):
         month = ''

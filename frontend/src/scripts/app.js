@@ -65,7 +65,7 @@ function checkLocation() {
 }
 
 function test() {
-    app.request.get('https://innovateit-19.appspot.com/', '11794', function (data) {
+    app.request.get('http://127.0.0.1:5000/query?location=11794', function (data) {
         console.log(data);
     });
 }
