@@ -23,16 +23,19 @@ function validateZipCode(zipcode) {
 
 onPageInit('home', function () {
     $$('#umap').hide();
+    $$('.viewinfobtn').hide();
     runAnimation();
 }, false);
 
 function checkLocation() {
     runAnimation(true, true);
+    let tpreloader = app.dialog.preloader('Evaluating location...');
     setTimeout(function () {
         let tzip = $$('input[name=zipcode]').val();
         if (validateZipCode(tzip)) {
             $$('#umap').show();
             $$('.mapbgimg').hide();
+            $$('.viewinfobtn').show();
             GMaps.geocode({
                 address: tzip,
                 callback: function (results, status) {
@@ -50,12 +53,12 @@ function checkLocation() {
                             lng: latlng.lng()
                         });
                     }
-                    runAnimation(true, false);
-                    app.sheet.open('.location-sheet');
+                    backendRequest(tzip, tpreloader);
                 }
             });
         } else {
             runAnimation(true, false);
+            tpreloader.close();
             app.toast.show({
                 text: 'Please enter a valid zip code.'
             });
@@ -64,8 +67,55 @@ function checkLocation() {
     }, 1000);
 }
 
-function test() {
-    app.request.get('http://127.0.0.1:5000/query?location=11794', function (data) {
-        console.log(data);
+function backendRequest(zip, zpreloader) {
+    
+    //app.sheet.open('.location-sheet');
+    app.request.get('http://127.0.0.1:5000/query?location=' + zip, function (data) {
+        let results = JSON.parse(data);
+        console.log(results)
+        let windbetter = false;
+        
+        if (results.wind.score > results.solar.score) {
+            windbetter = true;
+            $$('.results_wind_img').show();
+            $$('.results_solar_img').hide();
+            $$('.results_title').html('This area is best suited for wind power!');
+        } else {
+            $$('.results_wind_img').hide();
+            $$('.results_solar_img').show();
+            $$('.results_title').html('This area is best suited for solar power!');
+        }
+        app.popup.open('.popup-results');
+        //====sheet
+        let windgauge = app.gauge.create({
+            el: '.windgauge',
+            type: 'semicircle',
+            borderColor: '#4285f4',
+            value: results.wind.score / 100,
+            valueText: Math.floor(results.wind.score) + '%',
+            labelText: "Wind Score"
+        });
+        let solargauge = app.gauge.create({
+            el: '.solargauge',
+            type: 'semicircle',
+            borderColor: '#4285f4',
+            value: results.solar.score / 100,
+            valueText: Math.floor(results.solar.score) + '%',
+            labelText: "Solar Score"
+        });
+        console.log(results.other.wind_energy_savings);
+        $$('.location_best').html('This location is better suited for ' + (windbetter ? 'wind power.' : 'solar power.'));
+        $$('.savings_current').html('The current cost of electricity in this area is $' + results.other.current_elec_cost + ' per kWh.');
+        $$('.savings_wind').html('You would save ' + results.other.wind_energy_savings.toString() + ' per kWh, bringing the cost of electricity down to ' + (results.other.current_elec_cost - results.other.wind_energy_savings) + ' per kWh.');
+        $$('.savings_solar').html('You would save ' + results.other.solar_energy_savings.toString() + ' per kWh, bringing the cost of electricity down to ' + (results.other.current_elec_cost - results.other.solar_energy_savings) + ' per kWh.');
+        //======
+        runAnimation(true, false);
+        zpreloader.close();
+    }, function () {
+        console.log('request error');
+        app.toast.show({
+            text: 'There was an error making the request.'
+        });
+        zpreloader.close();
     });
 }
