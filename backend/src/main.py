@@ -1,7 +1,6 @@
 import json
 import random
 import requests
-import flask
 
 weather_api_token = '35ff60e414294feeb1d225230192903'
 weather_api_url_base = 'http://api.worldweatheronline.com/premium/v1/past-weather.ashx?'
@@ -18,13 +17,14 @@ num_of_data = 12
 
 # Comparison Data
 solar = {
-    'minSolarHours': 12,
-    'uv_index': 6,
+    'min_solar_hours': 4.0,
+    'uv_index': 6.0,
+    'min_solar_energy' : 1000,
     'avg_cost': 0.10
 }
 
 wind = {
-    'minWindSpeed': 9.0,
+    'min_wind_speed': 9.0,
     'avg_cost': 0.06
 }
 
@@ -108,11 +108,17 @@ def analyze_data(json_data):
     solar_energy_savings = current_elec_cost - solar['avg_cost']
 
     # Scoring Wind
-    wind_score = 0.0
-
+    wind_speed = (avg_wind_speed - wind['min_wind_speed']) / wind['min_wind_speed'] * 100
+    if (wind_speed < 0):
+        wind_speed = 0.0
+    wind_score = wind_speed * 0.6 + avg_chance_of_windy * 0.4
 
     # Scoring Solar
-    solar_score = 0.0
+    solar_energy = ((104 * avg_uv_index - 18.365) - solar['min_solar_energy']) / solar['min_solar_energy'] * 100
+    if (solar_energy < 0):
+        solar_energy = 0.0
+    sun_hours = (avg_sun_hours - solar['min_solar_hours']) / solar['min_solar_hours'] * 100
+    solar_score = sun_hours * 0.3 + solar_energy * 0.3 + avg_cloud_cover * 0.15 + avg_chance_of_sunshine * 0.25
 
     result['wind'].append({
         'score': wind_score,
