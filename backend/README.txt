@@ -1,1 +1,1 @@
-Using typescript, framework7 for frontend
+Using Python and Flask for Backend
