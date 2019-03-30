@@ -103,6 +103,9 @@ function backendRequest(zip, zpreloader) {
             labelText: "Solar Score"
         });
         $$('.location_best').html('This location is better suited for ' + (windbetter ? 'wind power.' : 'solar power.'));
+        $$('.savings_current').html('The current cost of electricity in this area is $' + results.other.current_elec_cost + 'per kWh.');
+        $$('.savings_wind').html('You would save ' + results.other.wind_energy_savings + ' per kWh, bringing the cost of electricity down to ' + results.other.current_elec_cost - results.other.wind_energy_savings + ' per kWh.');
+        $$('.savings_solar').html('You would save ' + results.other.solar_energy_savings + ' per kWh, bringing the cost of electricity down to ' + results.other.current_elec_cost - results.other.solar_energy_savings + ' per kWh.');
         //======
         runAnimation(true, false);
         zpreloader.close();
