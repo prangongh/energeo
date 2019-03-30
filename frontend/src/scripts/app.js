@@ -34,25 +34,30 @@ onPageInit('home', function () {
 }, false);
 
 function checkLocation() {
-    let tzip = $$('input[name=zipcode]').val();
-    if (validateZipCode(tzip)) {
-        GMaps.geocode({
-            address: tzip,
-            callback: function(results, status) {
-              if (status == 'OK') {
-                var latlng = results[0].geometry.location;
-                tmap.setCenter(latlng.lat(), latlng.lng());
-                tmap.addMarker({
-                  lat: latlng.lat(),
-                  lng: latlng.lng()
-                });
-              }
-            }
-          });
-    } else {
-        app.toast.show({
-            text: 'Please enter a valid zip code.'
-        });
-        return;
-    }
+    runAnimation(true, true);
+    setTimeout(function () {
+        let tzip = $$('input[name=zipcode]').val();
+        if (validateZipCode(tzip)) {
+            GMaps.geocode({
+                address: tzip,
+                callback: function (results, status) {
+                    if (status == 'OK') {
+                        var latlng = results[0].geometry.location;
+                        tmap.setCenter(latlng.lat(), latlng.lng());
+                        tmap.addMarker({
+                            lat: latlng.lat(),
+                            lng: latlng.lng()
+                        });
+                    }
+                    runAnimation(true, false);
+                }
+            });
+        } else {
+            runAnimation(true, false);
+            app.toast.show({
+                text: 'Please enter a valid zip code.'
+            });
+            return;
+        }
+    }, 1000);
 }

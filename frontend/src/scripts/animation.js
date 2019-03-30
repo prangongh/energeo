@@ -3,7 +3,7 @@
 //I heavily modified it a while ago to work in an old app, and I copied over that dumpster fire here
 //Source: https://codepen.io/dsenneff/details/2d338b0adf97472ebc5d473cf1fa910b
 
-function runAnimation() {
+function runAnimation(changestate = false, covereyes = true) {
     let lemail = document.querySelector('input[name=zipcode]'),
         lpassword = document.querySelector('input[name=signin_password]'),
         mySVG = document.querySelector('.svgContainer'),
@@ -36,7 +36,7 @@ function runAnimation() {
         dFromC, eyeDistH, eyeLDistV, eyeRDistV, eyeDistR, mouthStatus = "small";
 
     function getCoord(e) {
-        //@ts-ignore
+
         var carPos = lemail.selectionEnd,
             div = document.createElement('div'),
             span = document.createElement('span'),
@@ -49,9 +49,9 @@ function runAnimation() {
         });
         div.style.position = 'absolute';
         document.body.appendChild(div);
-        //@ts-ignore
+
         div.textContent = lemail.value.substr(0, carPos);
-        //@ts-ignore
+
         span.textContent = lemail.value.substr(carPos) || '.';
         div.appendChild(span);
 
@@ -59,9 +59,9 @@ function runAnimation() {
         caretCoords = getPosition(span); //console.log("caretCoords.x " + caretCoords.x + ", caretCoords.y: " + caretCoords.y);
         centerCoords = getPosition(mySVG); //console.log("centerCoords.x: " + centerCoords.x);
         svgCoords = getPosition(mySVG);
-        //@ts-ignore
+
         screenCenter = centerCoords.x + (mySVG.offsetWidth / 2); //console.log("screenCenter: " + screenCenter);
-        //@ts-ignore
+
         caretPos = caretCoords.x + emailCoords.x; //console.log("caretPos: " + caretPos);
 
         dFromC = screenCenter - caretPos; //console.log("dFromC: " + dFromC);
@@ -96,19 +96,19 @@ function runAnimation() {
             x: svgCoords.x + 100,
             y: svgCoords.y + 100
         };
-        //@ts-ignore
+
         var eyeLAngle = getAngle(eyeLCoords.x, eyeLCoords.y, emailCoords.x + caretCoords.x, emailCoords.y + 25);
         var eyeLX = Math.cos(eyeLAngle) * eyeMaxHorizD;
         var eyeLY = Math.sin(eyeLAngle) * eyeMaxVertD;
-        //@ts-ignore
+
         var eyeRAngle = getAngle(eyeRCoords.x, eyeRCoords.y, emailCoords.x + caretCoords.x, emailCoords.y + 25);
         var eyeRX = Math.cos(eyeRAngle) * eyeMaxHorizD;
         var eyeRY = Math.sin(eyeRAngle) * eyeMaxVertD;
-        //@ts-ignore
+
         var noseAngle = getAngle(noseCoords.x, noseCoords.y, emailCoords.x + caretCoords.x, emailCoords.y + 25);
         var noseX = Math.cos(noseAngle) * noseMaxHorizD;
         var noseY = Math.sin(noseAngle) * noseMaxVertD;
-        //@ts-ignore
+
         var mouthAngle = getAngle(mouthCoords.x, mouthCoords.y, emailCoords.x + caretCoords.x, emailCoords.y + 25);
         var mouthX = Math.cos(mouthAngle) * noseMaxHorizD;
         var mouthY = Math.sin(mouthAngle) * noseMaxVertD;
@@ -127,98 +127,98 @@ function runAnimation() {
         var outerEarY = Math.cos(mouthAngle) * 5;
         var hairX = Math.cos(mouthAngle) * 6;
         var hairS = 1.2;
-        //@ts-ignore
+
         TweenMax.to(eyeL, 1, {
             x: -eyeLX,
             y: -eyeLY,
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(eyeR, 1, {
             x: -eyeRX,
             y: -eyeRY,
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(nose, 1, {
             x: -noseX,
             y: -noseY,
             rotation: mouthR,
             transformOrigin: "center center",
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(mouth, 1, {
             x: -mouthX,
             y: -mouthY,
             rotation: mouthR,
             transformOrigin: "center center",
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(chin, 1, {
             x: -chinX,
             y: -chinY,
             scaleY: chinS,
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(face, 1, {
             x: -faceX,
             y: -faceY,
             skewX: -faceSkew,
             transformOrigin: "center top",
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(eyebrow, 1, {
             x: -faceX,
             y: -faceY,
             skewX: -eyebrowSkew,
             transformOrigin: "center top",
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(outerEarL, 1, {
             x: outerEarX,
             y: -outerEarY,
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(outerEarR, 1, {
             x: outerEarX,
             y: outerEarY,
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(earHairL, 1, {
             x: -outerEarX,
             y: -outerEarY,
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(earHairR, 1, {
             x: -outerEarX,
             y: outerEarY,
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(hair, 1, {
             x: hairX,
             scaleY: hairS,
             transformOrigin: "center bottom",
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
 
@@ -227,7 +227,7 @@ function runAnimation() {
 
     function onEmailFocus(e) {
         e.target.parentElement.classList.add("focusWithText");
-        //@ts-ignore
+
         getCoord();
     }
 
@@ -247,101 +247,101 @@ function runAnimation() {
     }
 
     function coverEyes() {
-        //@ts-ignore
+
         TweenMax.to(armL, 0.45, {
             x: -93,
             y: 2,
             rotation: 0,
-            //@ts-ignore
+
             ease: Quad.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(armR, 0.45, {
             x: -93,
             y: 2,
             rotation: 0,
-            //@ts-ignore
+
             ease: Quad.easeOut,
             delay: 0.1
         });
     }
 
     function uncoverEyes() {
-        //@ts-ignore
+
         TweenMax.to(armL, 1.35, {
             y: 220,
-            //@ts-ignore
+
             ease: Quad.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(armL, 1.35, {
             rotation: 105,
-            //@ts-ignore
+
             ease: Quad.easeOut,
             delay: 0.1
         });
-        //@ts-ignore
+
         TweenMax.to(armR, 1.35, {
             y: 220,
-            //@ts-ignore
+
             ease: Quad.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(armR, 1.35, {
             rotation: -105,
-            //@ts-ignore
+
             ease: Quad.easeOut,
             delay: 0.1
         });
     }
 
     function resetFace() {
-        //@ts-ignore
+
         TweenMax.to([eyeL, eyeR], 1, {
             x: 0,
             y: 0,
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(nose, 1, {
             x: 0,
             y: 0,
             scaleX: 1,
             scaleY: 1,
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(mouth, 1, {
             x: 0,
             y: 0,
             rotation: 0,
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to(chin, 1, {
             x: 0,
             y: 0,
             scaleY: 1,
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to([face, eyebrow], 1, {
             x: 0,
             y: 0,
             skewX: 0,
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
-        //@ts-ignore
+
         TweenMax.to([outerEarL, outerEarR, earHairL, earHairR, hair], 1, {
             x: 0,
             y: 0,
             scaleY: 1,
-            //@ts-ignore
+
             ease: Expo.easeOut
         });
     }
@@ -376,26 +376,34 @@ function runAnimation() {
             y: yPos
         };
     }
+    if (!changestate) {
+        lemail.addEventListener('focus', onEmailFocus);
+        lemail.addEventListener('blur', onEmailBlur);
+        lemail.addEventListener('input', onEmailFocus);
+    }
+    if (changestate) {
+        if (covereyes) {
+            onPasswordFocus();
+        } else {
+            onPasswordBlur();
+        }
+    }
+    if (!changestate) {
+        TweenMax.set(armL, {
+            x: -93,
+            y: 220,
+            rotation: 105,
+            transformOrigin: "top left"
+        });
 
-    lemail.addEventListener('focus', onEmailFocus);
-    lemail.addEventListener('blur', onEmailBlur);
-    lemail.addEventListener('input', onEmailFocus);
-   /* lpassword.addEventListener('focus', onPasswordFocus);
-    lpassword.addEventListener('blur', onPasswordBlur); */
-    //@ts-ignore
-    TweenMax.set(armL, {
-        x: -93,
-        y: 220,
-        rotation: 105,
-        transformOrigin: "top left"
-    });
-    //@ts-ignore
-    TweenMax.set(armR, {
-        x: -93,
-        y: 220,
-        rotation: -105,
-        transformOrigin: "top right"
-    });
+        TweenMax.set(armR, {
+            x: -93,
+            y: 220,
+            rotation: -105,
+            transformOrigin: "top right"
+        });
+    }
+
 }
 
 function toggleShowingPassword() {

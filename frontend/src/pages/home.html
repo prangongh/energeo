@@ -161,7 +161,7 @@
                         <!-- "item-floating-label" class on item title -->
                         <div class="item-title item-floating-label">Zipcode</div>
                         <div class="item-input-wrap">
-                            <input type="text" name="zipcode" maxlength="5">
+                            <input type="text" name="zipcode" maxlength="5" onkeypress="if(event.keyCode === 13){event.preventDefault();checkLocation();}">
                             <span class="input-clear-button"></span>
                         </div>
                     </div>
