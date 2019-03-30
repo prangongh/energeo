@@ -1,7 +1,7 @@
 # EnerGeo
-![Main Page](docs/1.png | width = 100)
-![Evaluating](docs/2.png | width = 100)
-![Results](docs/3.png | width = 100)
+![Main Page](docs/1.png =100)
+![Evaluating](docs/2.png =100)
+![Results](docs/3.png =100)
 
 ## Inspiration
 Renewable energy is the future, but there are multiple hurdles that prevent organizations and individuals from the successful transition to a fully renewable source. Our platform aims to remove those limitations and provide guidance throughout the entire transition process.
