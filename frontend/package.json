@@ -1,9 +1,9 @@
 {
-  "name": "drinkup",
+  "name": "innovateit2019",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "author": "Ryan O'Day",
+  "author": "The coolest team",
   "license": "ISC",
   "devDependencies": {
     "@types/es6-promise": "^3.3.0",
