@@ -29,7 +29,7 @@ onPageInit('home', function () {
 
 function checkLocation() {
     runAnimation(true, true);
-    tpreloader = app.dialog.preloader('Evaluating location...');
+    let tpreloader = app.dialog.preloader('Evaluating location...');
     setTimeout(function () {
         let tzip = $$('input[name=zipcode]').val();
         if (validateZipCode(tzip)) {
@@ -53,7 +53,7 @@ function checkLocation() {
                             lng: latlng.lng()
                         });
                     }
-                    backendRequest(tzip);
+                    backendRequest(tzip, tpreloader);
                 }
             });
         } else {
@@ -67,12 +67,13 @@ function checkLocation() {
     }, 5000);
 }
 
-function backendRequest(zip) {
-    runAnimation(true, false);
-    app.sheet.open('.location-sheet');
+function backendRequest(zip, zpreloader) {
+    
+    //app.sheet.open('.location-sheet');
     app.request.get('http://127.0.0.1:5000/query?location=' + zip, function (data) {
         let results = JSON.parse(data);
         console.log(results.wind.score);
+        app.popup.open('.popup-results');
         let scoregauge = app.gauge.create({
             el: '.scoregauge',
             type: 'semicircle',
@@ -80,6 +81,7 @@ function backendRequest(zip) {
             value: results.wind.score / 100,
             valueText: Math.floor(results.wind.score) + '%'
         });
-        tpreloader.close();
+        runAnimation(true, false);
+        zpreloader.close();
     });
 }
