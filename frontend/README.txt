@@ -1,1 +1,1 @@
-Using javascript, framework7 for frontend
+Using Javascript, Framework7 for Frontend
