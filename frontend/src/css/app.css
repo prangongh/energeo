@@ -2,6 +2,19 @@
     padding-right: 6px;
 }
 
+.backgroundsvg {
+    display: block;
+    margin: auto;
+    width: 75%;
+    height: 250px;
+    -webkit-user-drag: none;
+    user-drag: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 /* === Yeti === */
 .svgContainer {
     position: relative;

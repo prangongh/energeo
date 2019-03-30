@@ -22,14 +22,7 @@ function validateZipCode(zipcode) {
 }
 
 onPageInit('home', function () {
-    tmap = new GMaps({
-        el: '#umap',
-        lat: '40.915616',
-        lng: '-73.125152'
-    });
-    tmap.setCenter('40.915616', '-73.125152', function () {
-        //map centered
-    });
+    $$('#umap').hide();
     runAnimation();
 }, false);
 
@@ -38,11 +31,19 @@ function checkLocation() {
     setTimeout(function () {
         let tzip = $$('input[name=zipcode]').val();
         if (validateZipCode(tzip)) {
+            $$('#umap').show();
+            $$('.mapbgimg').hide();
             GMaps.geocode({
                 address: tzip,
                 callback: function (results, status) {
                     if (status == 'OK') {
                         var latlng = results[0].geometry.location;
+                        tmap = new GMaps({
+                            el: '#umap',
+                            lat: latlng.lat(),
+                            lng: latlng.lng()
+                        });
+
                         tmap.setCenter(latlng.lat(), latlng.lng());
                         tmap.addMarker({
                             lat: latlng.lat(),

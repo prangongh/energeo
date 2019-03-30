@@ -161,17 +161,19 @@
                         <!-- "item-floating-label" class on item title -->
                         <div class="item-title item-floating-label">Zipcode</div>
                         <div class="item-input-wrap">
-                            <input type="text" name="zipcode" maxlength="5" onkeypress="if(event.keyCode === 13){event.preventDefault();checkLocation();}">
+                            <input type="text" name="zipcode" maxlength="5"
+                                onkeypress="if(event.keyCode === 13){event.preventDefault();checkLocation();}">
                             <span class="input-clear-button"></span>
                         </div>
                     </div>
                 </li>
             </ul>
             <center>
-                <a class="button button-round button-large color-green button-fill" onclick="javascript:checkLocation();">Check</a>
+                <a class="button button-round button-large color-green button-fill"
+                    onclick="javascript:checkLocation();">Check</a>
             </center>
         </div>
+        <img src="img/map.svg" alt="Hello!" class="backgroundsvg mapbgimg">
         <div id="umap" style="width: 100%; height: 100vh;"></div>
-
     </div>
 </div>
