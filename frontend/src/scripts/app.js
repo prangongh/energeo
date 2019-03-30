@@ -65,7 +65,7 @@ function checkLocation() {
 }
 
 function test() {
-    app.request.get('blog-post.php', '11794', function (data) {
+    app.request.get('https://innovateit-19.appspot.com/', '11794', function (data) {
         console.log(data);
     });
 }
