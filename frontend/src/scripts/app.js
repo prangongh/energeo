@@ -50,6 +50,7 @@ function checkLocation() {
                         });
                     }
                     runAnimation(true, false);
+                    app.sheet.open('.location-sheet');
                 }
             });
         } else {
