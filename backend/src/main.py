@@ -31,7 +31,7 @@ wind = {
 # Functions
 def main(location):
     random_dates()
-    return analyze_data(get_data(location))
+    print(analyze_data(get_data(location)))
 
 def call_weather_api(location, date):
     url = weather_api_url_base + 'key=' + weather_api_token + '&q=' + location + '&date=' + date + '&tp=12' + '&format=json'
@@ -39,28 +39,23 @@ def call_weather_api(location, date):
 
 def call_utility_api(location):
     zipcode_data = call_zipcode_api(location)
-    url = utility_api_url_base + 'api_key=' + utility_api_token + '&lat=' + zipcode_data['lat'] + '&lon=' + zipcode_data['lon']
-    return requests.get(url).json
+    url = utility_api_url_base + 'api_key=' + utility_api_token + '&lat=' + str(zipcode_data['lat']) + '&lon=' + str(zipcode_data['lng'])
+    return requests.get(url).json()
 
 def call_zipcode_api(location):
     url = zipcode_api_url_base + location + '/degrees'
-    return requests.get(url).json
+    return requests.get(url).json()
 
 def get_data(location):
     json_data = {}
     json_data['weather'] = {}
     json_data['utility'] = {}
     for i in range(0, num_of_data):
-        try:
-            json_data['weather'].append(call_weather_api(location, dates[i]))
-        except:
-            print("Unable to get data from Weather server")
-            break
-    try:
-        json_data['utility'].append(call_utility_api(location))
-    except:
-        print("Unable to get data from Utility server")
+        json_data['weather'][str(i)] = call_weather_api(location, dates[i])
+
+    json_data['utility'] = call_utility_api(location)
     
+    print(json_data)
     return json_data
 
 def analyze_data(json_data):
@@ -72,38 +67,27 @@ def analyze_data(json_data):
     # Wind Data
     sum_data = 0.0
     for i in range(0, num_of_data):
-        sum_data += json_data['weather'][i]['data']['weather'][0]['hourly'][0]['winddirMiles']
-        sum_data += json_data['weather'][i]['data']['weather'][0]['hourly'][1]['winddirMiles']
+        sum_data += float(json_data['weather'][str(i)]['data']['weather'][0]['hourly'][0]['windspeedMiles'])
+        sum_data += float(json_data['weather'][str(i_]['data']['weather'][0]['hourly'][1]['windspeedMiles'])
     avg_wind_speed = sum_data / (num_of_data * 2)
-    
-    sum_data = 0.0
-    for i in range(0, num_of_data):
-        sum_data += json_data['weather'][i]['data']['weather'][0]['hourly'][0]['chanceofwindy']
-        sum_data += json_data['weather'][i]['data']['weather'][0]['hourly'][1]['chanceofwindy']
-    avg_chance_of_windy = sum_data / (num_of_data * 2)
 
     # Solar Data
     sum_data = 0.0
     for i in range(0, num_of_data):
-        sum_data += json_data['weather'][i]['data']['weather'][0]['sunHour']
+        sum_data += float(json_data['weather'][str(i)]['data']['weather'][0]['sunHour'])
     avg_sun_hours = sum_data / num_of_data
 
     sum_data = 0.0
     for i in range(0, num_of_data):
-        sum_data += json_data['weather'][i]['data']['weather'][0]['hourly'][1]['uvIndex']
+        sum_data += float(json_data['weather'][str(i)]['data']['weather'][0]['hourly'][1]['uvIndex'])
     avg_uv_index = sum_data / num_of_data
 
     sum_data = 0.0
     for i in range(0, num_of_data):
-        sum_data += json_data['weather'][i]['data']['weather'][0]['hourly'][1]['chanceofsunshine']
-    avg_chance_of_sunshine = sum_data / num_of_data
-
-    sum_data = 0.0
-    for i in range(0, num_of_data):
-        sum_data += json_data['weather'][i]['data']['weather'][0]['hourly'][1]['cloudcover']
+        sum_data += float(json_data['weather'][str(i)]['data']['weather'][0]['hourly'][1]['cloudcover'])
     avg_cloud_cover = sum_data / num_of_data
 
-    current_elec_cost = json_data['utility']['output']['residential']
+    current_elec_cost = json_data['utility']['outputs']['residential']
     wind_energy_savings = current_elec_cost - wind['avg_cost']
     solar_energy_savings = current_elec_cost - solar['avg_cost']
 
@@ -111,26 +95,24 @@ def analyze_data(json_data):
     wind_speed = (avg_wind_speed - wind['min_wind_speed']) / wind['min_wind_speed'] * 100
     if (wind_speed < 0):
         wind_speed = 0.0
-    wind_score = wind_speed * 0.6 + avg_chance_of_windy * 0.4
+    wind_score = wind_speed
 
     # Scoring Solar
     solar_energy = ((104 * avg_uv_index - 18.365) - solar['min_solar_energy']) / solar['min_solar_energy'] * 100
     if (solar_energy < 0):
         solar_energy = 0.0
     sun_hours = (avg_sun_hours - solar['min_solar_hours']) / solar['min_solar_hours'] * 100
-    solar_score = sun_hours * 0.3 + solar_energy * 0.3 + avg_cloud_cover * 0.15 + avg_chance_of_sunshine * 0.25
+    solar_score = sun_hours * 0.4 + solar_energy * 0.4 + avg_cloud_cover * 0.2
 
     result['wind'].append({
         'score': wind_score,
-        'avg_wind_speed': avg_wind_speed,
-        'avg_chance_of_windy': avg_chance_of_windy
+        'avg_wind_speed': avg_wind_speed
     })
         
     result['solar'].append({
         'score': solar_score,
         'avg_sun_hours': avg_sun_hours,
         'avg_uv_index': avg_uv_index,
-        'avg_chance_of_sunshine': avg_chance_of_sunshine,
         'avg_cloud_cover': avg_cloud_cover
     })
 
@@ -178,3 +160,4 @@ def random_dates():
     
 
 # Wind speeds: range of 89 MPH to 161 MPH; most common survival speed is 134 MPH
+main('11432')
