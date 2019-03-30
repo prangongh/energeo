@@ -39,6 +39,7 @@ gulp.task('dependencies-debug', function () {
     gulp.src('src/lib/firebase/**/*').pipe(gulp.dest('debug/lib/firebase'));
     gulp.src('src/lib/webfonts/**/*').pipe(gulp.dest('debug/lib/webfonts'));
     gulp.src('src/lib/framework7/*.js').pipe(gulp.dest('debug/lib/framework7'));
+    gulp.src('src/lib/gmaps/*.js').pipe(gulp.dest('debug/lib/gmaps'));
     gulp.src('src/lib/*.js').pipe(concat('libs.js')).pipe(gulp.dest('debug/lib'));
 });
 
@@ -127,6 +128,7 @@ gulp.task('dependencies-firebase', function () {
     gulp.src('src/lib/firebase/**/*').pipe(gulp.dest('firebase/public/lib/firebase'));
     gulp.src('src/lib/webfonts/**/*').pipe(gulp.dest('firebase/public/lib/webfonts'));
     gulp.src('src/lib/framework7/*.js').pipe(gulp.dest('firebase/public/lib/framework7'));
+    gulp.src('src/lib/gmaps/*.js').pipe(gulp.dest('firebase/public/lib/gmaps'));
     gulp.src('src/lib/*.js').pipe(concat('libs.js')).pipe(gulp.dest('firebase/public/lib'));
 });
 

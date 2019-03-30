@@ -1,9 +1,9 @@
 {
-  "name": "drinkup",
+  "name": "energeo",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "author": "Ryan O'Day",
+  "author": "Ryan O'Day, Kelley Chiu, Prangon Ghose, Zhen Yi Pan",
   "license": "ISC",
   "devDependencies": {
     "@types/es6-promise": "^3.3.0",
